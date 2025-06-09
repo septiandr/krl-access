@@ -1,9 +1,5 @@
-// api/krl.ts (ubah ekstensi ke .ts supaya TypeScript lebih ketat)
+import { API_BASE_URL, TOKEN } from "@/constants/constanst";
 import axios from "axios";
-
-const TOKEN = `Bearer ${process.env.EXPO_PUBLIC_TOKEN}`;
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || "";
-
 export interface TrainSchedule {
   train_id: string;
   ka_name: string;
@@ -40,7 +36,7 @@ export const getSchedule = async (
   } = params;
 
   try {
-    const response = await axios.get<TrainScheduleResponse>(API_BASE_URL, {
+    const response = await axios.get<TrainScheduleResponse>(`${API_BASE_URL}/schedule`, {
       params: {
         stationid: stationId,
         timefrom: timeFrom,
