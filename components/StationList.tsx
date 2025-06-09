@@ -10,13 +10,13 @@ type Station = {
 
 const StationList = () => {
     const router = useRouter();
-    console.log("🚀 ~ StationList ~ router:", router)
 
     const handlePress = (station :Station) => {
         router.navigate({
-            pathname: '/schedule',
+            pathname: '/schedule/[code]',
             params: {
                 code: station.code,
+                name: station.name,
             }
         });
     };
