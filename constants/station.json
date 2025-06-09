@@ -1,0 +1,15 @@
+[
+    { "name": "Yogyakarta", "code": "YK" },
+    { "name": "Lempuyangan", "code": "LPN" },
+    { "name": "Maguwo", "code": "MGW" },
+    { "name": "Brambanan", "code": "BBN" },
+    { "name": "Srowot", "code": "SWT" },
+    { "name": "Klaten", "code": "KT" },
+    { "name": "Ceper", "code": "CE" },
+    { "name": "Delanggu", "code": "DL" },
+    { "name": "Gawok", "code": "GW" },
+    { "name": "Purwosari", "code": "PWS" },
+    { "name": "Solo Balapan", "code": "SLO" },
+    { "name": "Solo Jebres", "code": "SK" },
+    { "name": "Palur", "code": "PL" }
+  ]
