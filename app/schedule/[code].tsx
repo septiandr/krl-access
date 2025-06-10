@@ -20,10 +20,12 @@ const Schedule: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { code, name } = useLocalSearchParams();
-  const [filteredValue, setFilteredValue] = useState<TrainSchedule[] | null>(null);
+  const [filteredValue, setFilteredValue] = useState<TrainSchedule[] | null>(
+    null
+  );
   const [activeFilter, setActiveFilter] = useState("");
   const router = useRouter();
-  
+
   useEffect(() => {
     const fetchSchedule = async () => {
       setLoading(true);
@@ -32,12 +34,11 @@ const Schedule: React.FC = () => {
       const response: TrainScheduleResponse | null = await getSchedule({
         stationId: code as string,
       });
-
       setLoading(false);
 
       if (response && response.status === 200) {
         const filtered = response.data.filter(
-          (item) => item.color !== "#0084D8"
+          (item) => item.ka_name === "COMMUTER LINE YOGYAKARTA"
         );
         setSchedule(filtered);
         setFilteredValue(filtered);
@@ -71,33 +72,35 @@ const Schedule: React.FC = () => {
   };
 
   const renderItem = ({ item }: { item: TrainSchedule }) => (
-    <View style={[styles.card, { backgroundColor: getCardBackgroundColor(item.dest) }]}>
-      <View>
-        <Text style={styles.trainName}>{item.ka_name}</Text>
-        <Text style={styles.text}>Rute: {item.route_name}</Text>
-        <Text style={styles.text}>Dari: {name}</Text>
-        <Text style={styles.text}>Tujuan: {item.dest}</Text>
+    <View
+      style={[
+        styles.card,
+        { backgroundColor: getCardBackgroundColor(item.dest) },
+      ]}
+    >
+      <View style={{flex:3}}>
+        <Text style={styles.text}>
+          {String(name).toUpperCase()} - {item.dest}
+        </Text>
         <Text style={styles.time}>Berangkat: {item.time_est}</Text>
         <Text style={styles.time}>Tiba: {item.dest_time}</Text>
       </View>
-      <View>
+      <View style={{flex:1}}>
         <TouchableOpacity
-          style={styles.filterButton}
-          onPress={() => router.navigate({
-            pathname: "/train/[trainid]",
-            params: {
-              trainid: item.train_id,
-              start: name,
-              color: getCardBackgroundColor(item.dest),
-              finish: item.dest,
-            },
-          })}
+          style={[styles.filterButton, {backgroundColor:'#4A90E2'}]}
+          onPress={() =>
+            router.navigate({
+              pathname: "/train/[trainid]",
+              params: {
+                trainid: item.train_id,
+                start: name,
+                color: getCardBackgroundColor(item.dest),
+                finish: item.dest,
+              },
+            })
+          }
         >
-          <Text
-            style={styles.filterText}
-          >
-            Lihat
-          </Text>
+          <Text style={[styles.filterText,{color:'#fff'}]}>View</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -136,7 +139,7 @@ const Schedule: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Jadwal Kereta • {name}</Text>
+      <Text style={styles.title}>{name}</Text>
 
       <Text style={styles.filterLabel}>Filter:</Text>
       <View style={styles.filterContainer}>
@@ -194,6 +197,7 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: 12,
+    gap: 10,
     padding: 16,
     shadowColor: "#000",
     shadowOpacity: 0.05,
@@ -211,9 +215,10 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   text: {
-    fontSize: 14,
-    color: "#4B5563",
+    fontSize: 16,
+    color: "#4A90E2",
     marginBottom: 2,
+    fontWeight: "700", // Menambahkan gaya teks bold untuk dest
   },
   time: {
     fontSize: 14,
@@ -249,14 +254,18 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   filterButton: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#E5E7EB",
-    paddingVertical: 25,
-    paddingHorizontal: 25,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
     borderRadius: 20,
   },
   filterText: {
     color: "#111827",
-    fontWeight: "500",
+    fontWeight: "600",
   },
   activeFilterButton: {
     backgroundColor: "#60A5FA",
