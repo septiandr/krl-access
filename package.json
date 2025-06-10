@@ -9,8 +9,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "build-apk":"eas build -p android --profile preview --local",
-    "build-aab":"eas build -p android --profile production --local"
+    "build-apk": "find . -name '*.apk' -delete && eas build -p android --profile preview --local",
+    "build-aab": "eas build -p android --profile production --local"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
