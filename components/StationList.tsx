@@ -1,12 +1,12 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 import {
-    FlatList,
-    Platform,
-    Pressable,
-    StyleSheet,
-    Text,
-    View
+  FlatList,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 import stations from '../constants/station.json';
 

@@ -5,7 +5,7 @@ export const filters = [
 ];
 
 export const timeFilters = [
-  { label: "5-11", value: "1" },
-  { label: "12-17", value: "2" },
+  { label: "5-12", value: "1" },
+  { label: "12-18", value: "2" },
   { label: "18-23", value: "3" },
 ];
