@@ -3,55 +3,21 @@ import {
   TrainSchedule,
   TrainScheduleResponse,
 } from "@/api/getSchedule";
+import { filters, timeFilters } from "@/constants/filter";
+import { filterSchedule } from "@/helper/filterStation";
 import { formatTime } from "@/helper/formatTime";
+import { getCardBackgroundColor } from "@/helper/getCardBackgroundColor";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
-  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
-
-const filters = [
-  { label: "Semua", value: "" },
-  { label: "Palur", value: "palur" },
-  { label: "Yogyakarta", value: "yogyakarta" },
-];
-
-const timeFilters = [
-  { label: "5-11", value: "1" },
-  { label: "12-17", value: "2" },
-  { label: "18-23", value: "3" },
-];
-
-const filterSchedule = (
-  schedule: TrainSchedule[] | null,
-  destinationFilter: string,
-  timeFilter: string
-): TrainSchedule[] => {
-  if (!schedule) return [];
-
-  return schedule.filter((item) => {
-    const hour = parseInt(item.time_est.slice(0, 2), 10);
-
-    const matchesDestination = item.dest
-      .toLowerCase()
-      .includes(destinationFilter.toLowerCase());
-
-    const matchesTime =
-      (timeFilter === "1" && hour < 12) ||
-      (timeFilter === "2" && hour >= 12 && hour < 17) ||
-      (timeFilter === "3" && hour >= 17) ||
-      timeFilter === "";
-
-    return matchesDestination && matchesTime;
-  });
-};
 
 const Schedule: React.FC = () => {
   const [schedule, setSchedule] = useState<TrainSchedule[] | null>(null);
@@ -111,13 +77,6 @@ const Schedule: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const getCardBackgroundColor = (destination: string) => {
-    const lowerDest = destination.toLowerCase();
-    if (lowerDest.includes("yogyakarta")) return "#E0F2FE"; // biru muda
-    if (lowerDest.includes("palur")) return "#FEF3C7"; // kuning muda
-    return "#FFFFFF";
   };
 
   const renderItem = ({ item }: { item: TrainSchedule }) => (
