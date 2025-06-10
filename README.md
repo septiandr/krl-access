@@ -1,50 +1,44 @@
-# Welcome to your Expo app 👋
+📱 KRL Access
+KRL Access adalah aplikasi mobile yang dibangun menggunakan React Native dengan Expo. Aplikasi ini dirancang khusus untuk menampilkan jadwal KRL rute Jogja - Solo secara cepat dan sederhana. Tujuannya adalah memberikan pengalaman pengguna yang lebih fokus dan efisien dalam mengakses jadwal perjalanan KRL.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+🚀 Fitur Utama
+Menampilkan jadwal KRL Jogja - Solo secara spesifik.
 
-## Get started
+Antarmuka sederhana dan ringan, mudah digunakan oleh semua kalangan.
 
-1. Install dependencies
+Diperbarui dan disesuaikan untuk kebutuhan pribadi pengguna.
 
-   ```bash
-   npm install
-   ```
+🎯 Latar Belakang
+Aplikasi ini dibuat berdasarkan kebutuhan pribadi untuk melihat jadwal KRL Jogja - Solo secara cepat tanpa harus mencari secara manual dari sumber yang kompleks. Dengan aplikasi ini, pengguna bisa langsung melihat jadwal yang relevan tanpa gangguan informasi lain yang tidak diperlukan.
 
-2. Start the app
+🛠️ Teknologi
+React Native
 
-   ```bash
-   npx expo start
-   ```
+Expo CLI
 
-In the output, you'll find options to open the app in a
+JavaScript/TypeScript (jika digunakan)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+(Tambahkan library lain jika digunakan, seperti Axios, Redux, dll.)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+⚙️ Cara Menjalankan Aplikasi
+Clone repositori ini:
 
-## Get a fresh project
+git clone <URL-repo-anda>
+cd krl-access
+Install dependencies:
 
-When you're ready, run:
+yarn install
+Jalankan aplikasi:
 
-```bash
-npm run reset-project
-```
+yarn start
+Scan QR Code menggunakan aplikasi Expo Go pada perangkat mobile Anda.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+🧾 Catatan Tambahan
+Aplikasi ini bersifat pribadi, namun dapat dikembangkan lebih lanjut untuk mencakup rute lain.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Jika Anda memiliki ide pengembangan atau kontribusi, silakan fork repo ini dan buat pull request.
 
-## Join the community
 
-Join our community of developers creating universal apps.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
