@@ -20,7 +20,6 @@ const Schedule: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { code, name } = useLocalSearchParams();
-  console.log("🚀 ~ name:", name)
   const [filteredValue, setFilteredValue] = useState<TrainSchedule[] | null>(null);
   const [activeFilter, setActiveFilter] = useState("");
   const router = useRouter();
