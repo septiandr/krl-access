@@ -1,17 +1,21 @@
 import { getTrainSchedule, TrainSchedule } from "@/api/getTrainTimeList";
 import { formatTime } from "@/helper/formatTime";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
+
 
 const TrainScheduleList: React.FC = () => {
+  const history = useRouter();
   const [schedules, setSchedules] = useState<TrainSchedule[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,8 +38,10 @@ const TrainScheduleList: React.FC = () => {
   }, [trainid]);
 
   const renderItem = ({ item }: { item: TrainSchedule }) => (
-    <View style={[styles.card, { backgroundColor: '#60A5FA' }]}>
-      <Text style={[styles.detailText, {fontWeight:'400', fontSize:16}]}>{item.station_name}</Text>
+    <View style={[styles.card, { backgroundColor: "#60A5FA" }]}>
+      <Text style={[styles.detailText, { fontWeight: "400", fontSize: 16 }]}>
+        {item.station_name}
+      </Text>
       <Text style={styles.detailText}>{formatTime(item.time_est)}</Text>
     </View>
   );
@@ -67,13 +73,26 @@ const TrainScheduleList: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.trainName}>{String(start).toUpperCase()} - {finish}</Text>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginBottom: 16, gap: 8, marginHorizontal: 8 }}
+      >
+        <TouchableOpacity style={{paddingTop: 8, paddingRight: 8}} onPress={() => history.back()}>
+          <AntDesign name="arrowleft" size={24} color="#4A90E2" />
+        </TouchableOpacity>
+        <Text style={styles.trainName}>
+          {String(start).toUpperCase()} - {finish}
+        </Text>
+      </View>
       <FlatList
         data={schedules}
         keyExtractor={(item) => item.train_id + item.station_id}
         renderItem={renderItem}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
-        contentContainerStyle={{ paddingBottom: 20, paddingTop:20, paddingHorizontal:15 }}
+        contentContainerStyle={{
+          paddingBottom: 20,
+          paddingTop: 20,
+          paddingHorizontal: 15,
+        }}
       />
     </SafeAreaView>
   );

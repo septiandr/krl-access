@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const filters = [
   { label: "Semua", value: "" },
@@ -51,7 +52,6 @@ const filterSchedule = (
     return matchesDestination && matchesTime;
   });
 };
-
 
 const Schedule: React.FC = () => {
   const [schedule, setSchedule] = useState<TrainSchedule[] | null>(null);
@@ -105,7 +105,7 @@ const Schedule: React.FC = () => {
     try {
       setActiveTimeFilter(value);
       if (schedule?.length !== 0) {
-        const timeFilterList =  filterSchedule(schedule, activeFilter, value);
+        const timeFilterList = filterSchedule(schedule, activeFilter, value);
         setFilteredValue(timeFilterList || null);
       }
     } catch (error) {
@@ -181,8 +181,24 @@ const Schedule: React.FC = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Stasiun {name}</Text>
+    <View style={styles.container}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: 16,
+          gap: 8,
+          marginHorizontal: 8,
+        }}
+      >
+        <TouchableOpacity
+          style={{ paddingRight: 8 }}
+          onPress={() => router.back()}
+        >
+          <AntDesign name="arrowleft" size={24} color="#4A90E2" />
+        </TouchableOpacity>
+        <Text style={styles.title}>Stasiun {name}</Text>
+      </View>
 
       <Text style={styles.filterLabel}>Filter:</Text>
       <View style={styles.filterContainer}>
@@ -238,7 +254,7 @@ const Schedule: React.FC = () => {
         contentContainerStyle={{ paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -258,7 +274,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "600",
-    marginBottom: 16,
     color: "#4A90E2",
   },
   card: {
