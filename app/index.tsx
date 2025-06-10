@@ -1,6 +1,9 @@
-import StationList from '@/components/StationList'
-import React from 'react'
-import { View } from 'react-native'
+import StationList from '@/components/StationList';
+import { SplashScreen } from 'expo-router';
+import React from 'react';
+import { View } from 'react-native';
+
+SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   return (

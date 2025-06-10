@@ -2,7 +2,7 @@
   "expo": {
     "name": "KRL Access",
     "slug": "krl-access",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/krl-icon.png",
     "scheme": "krlaccess",
@@ -30,7 +30,8 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/splash.png",
-          "imageWidth": 200
+          "imageResizeMode": "contain",
+          "backgroundColor": "#ffffff" 
         }
       ]
     ],
