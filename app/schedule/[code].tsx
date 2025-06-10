@@ -1,12 +1,9 @@
-import {
-  getSchedule,
-  TrainSchedule,
-  TrainScheduleResponse,
-} from "@/api/getSchedule";
+import { TrainSchedule } from "@/api/getSchedule";
 import { filters, timeFilters } from "@/constants/filter";
 import { filterSchedule } from "@/helper/filterStation";
 import { formatTime } from "@/helper/formatTime";
 import { getCardBackgroundColor } from "@/helper/getCardBackgroundColor";
+import { useSchedule } from "@/hooks/useGetSchedule";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -16,45 +13,23 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 
 const Schedule: React.FC = () => {
   const [schedule, setSchedule] = useState<TrainSchedule[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const { code, name } = useLocalSearchParams();
   const [filteredValue, setFilteredValue] = useState<TrainSchedule[] | null>(
     null
   );
 
+  const { loading, error } = useSchedule({ stationId: code }, (data) =>
+    setSchedule(data?.data ?? null)
+  );
+
   const [activeFilter, setActiveFilter] = useState("");
   const [activeTimeFilter, setActiveTimeFilter] = useState("");
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchSchedule = async () => {
-      setLoading(true);
-      setError(null);
-
-      const response: TrainScheduleResponse | null = await getSchedule({
-        stationId: code as string,
-      });
-      setLoading(false);
-
-      if (response && response.status === 200) {
-        const filtered = response.data.filter(
-          (item) => item.ka_name === "COMMUTER LINE YOGYAKARTA"
-        );
-        setSchedule(filtered);
-        setFilteredValue(filtered);
-      } else {
-        setError("Gagal mengambil jadwal kereta.");
-      }
-    };
-
-    fetchSchedule();
-  }, []);
 
   const onChangeFilter = (value: string) => {
     setActiveFilter(value);
@@ -78,6 +53,12 @@ const Schedule: React.FC = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (schedule && schedule.length > 0) {
+      setFilteredValue(schedule);
+    }
+  }, [schedule]);
 
   const renderItem = ({ item }: { item: TrainSchedule }) => (
     <View
@@ -123,10 +104,10 @@ const Schedule: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (error?.message) {
     return (
       <View style={styles.center}>
-        <Text style={styles.errorText}>{error}</Text>
+        <Text style={styles.errorText}>{error.message}</Text>
       </View>
     );
   }

@@ -1,5 +1,7 @@
-import { getTrainSchedule, TrainSchedule } from "@/api/getTrainTimeList";
+import { TrainSchedule } from "@/api/getTrainTimeList";
 import { formatTime } from "@/helper/formatTime";
+import { useGetTrainTime } from "@/hooks/useGetTrainTime";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
@@ -11,31 +13,21 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
-
 
 const TrainScheduleList: React.FC = () => {
   const history = useRouter();
   const [schedules, setSchedules] = useState<TrainSchedule[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const { trainid, start, color, finish } = useLocalSearchParams();
 
+  const { loading, error, data } = useGetTrainTime(trainid as string);
+
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const res = await getTrainSchedule(trainid as string);
-      setLoading(false);
-
-      if (res && res.status === 200) {
-        setSchedules(res.data);
-      } else {
-        setError("Gagal mengambil data jadwal.");
-      }
-    };
-
-    fetchData();
-  }, [trainid]);
+    if (data && data.data) {
+      setSchedules(data.data);
+    } else {
+      setSchedules(null);
+    }
+  }, [data]);
 
   const renderItem = ({ item }: { item: TrainSchedule }) => (
     <View style={[styles.card, { backgroundColor: "#60A5FA" }]}>
@@ -55,10 +47,10 @@ const TrainScheduleList: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (error?.message) {
     return (
       <View style={styles.center}>
-        <Text style={styles.errorText}>{error}</Text>
+        <Text style={styles.errorText}>{error.message}</Text>
       </View>
     );
   }
@@ -74,9 +66,18 @@ const TrainScheduleList: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View
-        style={{ flexDirection: "row", alignItems: "center", marginBottom: 16, gap: 8, marginHorizontal: 8 }}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: 16,
+          gap: 8,
+          marginHorizontal: 8,
+        }}
       >
-        <TouchableOpacity style={{paddingTop: 8, paddingRight: 8}} onPress={() => history.back()}>
+        <TouchableOpacity
+          style={{ paddingTop: 8, paddingRight: 8 }}
+          onPress={() => history.back()}
+        >
           <AntDesign name="arrowleft" size={24} color="#4A90E2" />
         </TouchableOpacity>
         <Text style={styles.trainName}>
