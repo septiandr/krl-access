@@ -3,6 +3,7 @@ import {
   TrainSchedule,
   TrainScheduleResponse,
 } from "@/api/getSchedule";
+import { formatTime } from "@/helper/formatTime";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
@@ -15,6 +16,43 @@ import {
   View,
 } from "react-native";
 
+const filters = [
+  { label: "Semua", value: "" },
+  { label: "Palur", value: "palur" },
+  { label: "Yogyakarta", value: "yogyakarta" },
+];
+
+const timeFilters = [
+  { label: "5-11", value: "1" },
+  { label: "12-17", value: "2" },
+  { label: "18-23", value: "3" },
+];
+
+const filterSchedule = (
+  schedule: TrainSchedule[] | null,
+  destinationFilter: string,
+  timeFilter: string
+): TrainSchedule[] => {
+  if (!schedule) return [];
+
+  return schedule.filter((item) => {
+    const hour = parseInt(item.time_est.slice(0, 2), 10);
+
+    const matchesDestination = item.dest
+      .toLowerCase()
+      .includes(destinationFilter.toLowerCase());
+
+    const matchesTime =
+      (timeFilter === "1" && hour < 12) ||
+      (timeFilter === "2" && hour >= 12 && hour < 17) ||
+      (timeFilter === "3" && hour >= 17) ||
+      timeFilter === "";
+
+    return matchesDestination && matchesTime;
+  });
+};
+
+
 const Schedule: React.FC = () => {
   const [schedule, setSchedule] = useState<TrainSchedule[] | null>(null);
   const [loading, setLoading] = useState(false);
@@ -23,7 +61,9 @@ const Schedule: React.FC = () => {
   const [filteredValue, setFilteredValue] = useState<TrainSchedule[] | null>(
     null
   );
+
   const [activeFilter, setActiveFilter] = useState("");
+  const [activeTimeFilter, setActiveTimeFilter] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -54,10 +94,19 @@ const Schedule: React.FC = () => {
     setActiveFilter(value);
     try {
       if (schedule?.length !== 0) {
-        const filtered = schedule?.filter((item) =>
-          item.dest.toLowerCase().includes(value.toLowerCase())
-        );
+        const filtered = filterSchedule(schedule, value, activeTimeFilter);
         setFilteredValue(value ? filtered || null : schedule);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const onChangeTimeFilter = (value: string) => {
+    try {
+      setActiveTimeFilter(value);
+      if (schedule?.length !== 0) {
+        const timeFilterList =  filterSchedule(schedule, activeFilter, value);
+        setFilteredValue(timeFilterList || null);
       }
     } catch (error) {
       console.log(error);
@@ -78,16 +127,16 @@ const Schedule: React.FC = () => {
         { backgroundColor: getCardBackgroundColor(item.dest) },
       ]}
     >
-      <View style={{flex:3}}>
+      <View style={{ flex: 3 }}>
         <Text style={styles.text}>
           {String(name).toUpperCase()} - {item.dest}
         </Text>
-        <Text style={styles.time}>Berangkat: {item.time_est}</Text>
-        <Text style={styles.time}>Tiba: {item.dest_time}</Text>
+        <Text style={styles.time}>Berangkat: {formatTime(item.time_est)}</Text>
+        <Text style={styles.time}>Tiba: {formatTime(item.dest_time)}</Text>
       </View>
-      <View style={{flex:1}}>
+      <View style={{ flex: 1 }}>
         <TouchableOpacity
-          style={[styles.filterButton, {backgroundColor:'#4A90E2'}]}
+          style={[styles.filterButton, { backgroundColor: "#4A90E2" }]}
           onPress={() =>
             router.navigate({
               pathname: "/train/[trainid]",
@@ -100,7 +149,7 @@ const Schedule: React.FC = () => {
             })
           }
         >
-          <Text style={[styles.filterText,{color:'#fff'}]}>View</Text>
+          <Text style={[styles.filterText, { color: "#fff" }]}>View</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -131,15 +180,9 @@ const Schedule: React.FC = () => {
     );
   }
 
-  const filters = [
-    { label: "Semua", value: "" },
-    { label: "Palur", value: "palur" },
-    { label: "Yogyakarta", value: "yogyakarta" },
-  ];
-
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>{name}</Text>
+      <Text style={styles.title}>Stasiun {name}</Text>
 
       <Text style={styles.filterLabel}>Filter:</Text>
       <View style={styles.filterContainer}>
@@ -156,6 +199,29 @@ const Schedule: React.FC = () => {
               style={[
                 styles.filterText,
                 activeFilter === filter.value && styles.activeFilterText,
+              ]}
+            >
+              {filter.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <Text style={styles.filterLabel}>Time Filter:</Text>
+      <View style={styles.filterContainer}>
+        {timeFilters.map((filter) => (
+          <TouchableOpacity
+            key={filter.value}
+            style={[
+              styles.filterButton,
+              activeTimeFilter === filter.value && styles.activeFilterButton,
+              { paddingVertical: 8, paddingHorizontal: 25 },
+            ]}
+            onPress={() => onChangeTimeFilter(filter.value)}
+          >
+            <Text
+              style={[
+                styles.filterText,
+                activeTimeFilter === filter.value && styles.activeFilterText,
               ]}
             >
               {filter.label}
@@ -193,7 +259,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "600",
     marginBottom: 16,
-    color: "#111827",
+    color: "#4A90E2",
   },
   card: {
     borderRadius: 12,

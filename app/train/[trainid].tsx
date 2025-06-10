@@ -34,8 +34,8 @@ const TrainScheduleList: React.FC = () => {
   }, [trainid]);
 
   const renderItem = ({ item }: { item: TrainSchedule }) => (
-    <View style={[styles.card, { backgroundColor: color as string }]}>
-      <Text style={styles.detailText}>{item.station_name}</Text>
+    <View style={[styles.card, { backgroundColor: '#60A5FA' }]}>
+      <Text style={[styles.detailText, {fontWeight:'400', fontSize:16}]}>{item.station_name}</Text>
       <Text style={styles.detailText}>{formatTime(item.time_est)}</Text>
     </View>
   );
@@ -106,14 +106,15 @@ const styles = StyleSheet.create({
   },
   trainName: {
     fontSize: 18,
+    textAlign: "center",
     fontWeight: "700",
-    color: "#111827",
+    color: "#4A90E2",
     marginBottom: 8,
     marginTop: 16,
   },
   detailText: {
     fontSize: 18,
-    color: "#374151",
+    color: "#fff",
     marginBottom: 2,
     fontWeight: "700",
   },
