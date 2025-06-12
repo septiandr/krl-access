@@ -22,6 +22,7 @@ export function useCachedRequest<T>(
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
+  console.log("🚀 ~ error:", error)
 
   const loadData = async () => {
     setLoading(true)
@@ -30,10 +31,13 @@ export function useCachedRequest<T>(
       setData(result)
       await AsyncStorage.setItem(key, JSON.stringify(result))
       setError(null)
+            const cached = await AsyncStorage.getItem(key)
+      console.log("🚀 ~ loadData ~ cached:", cached)
       options.onSuccess?.(result) // panggil onSuccess jika disediakan
     } catch (err: any) {
       setError(err)
       const cached = await AsyncStorage.getItem(key)
+      console.log("🚀 ~ loadData ~ cached:", cached)
       if (cached) {
         const parsed = JSON.parse(cached)
         setData(parsed)

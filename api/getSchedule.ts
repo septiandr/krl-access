@@ -28,28 +28,24 @@ export type GetScheduleResult = TrainScheduleResponse | null;
 
 export const getSchedule = async (
   params: GetScheduleParams = {}
-): Promise<GetScheduleResult> => {
+): Promise<TrainScheduleResponse> => {
   const {
     stationId = "YK",
     timeFrom = "00:00",
     timeTo = "24:00",
   } = params;
 
-  try {
-    const response = await axios.get<TrainScheduleResponse>(`${API_BASE_URL}/schedule`, {
-      params: {
-        stationid: stationId,
-        timefrom: timeFrom,
-        timeto: timeTo,
-      },
-      headers: {
-        Authorization: TOKEN,
-      },
-    });
+  const response = await axios.get<TrainScheduleResponse>(`${API_BASE_URL}/schedule`, {
+    params: {
+      stationid: stationId,
+      timefrom: timeFrom,
+      timeto: timeTo,
+    },
+    headers: {
+      Authorization: TOKEN,
+    },
+  });
 
-    return response.data;
-  } catch (error: any) {
-    console.error("Gagal fetch jadwal:", error.response?.data || error.message);
-    return null;
-  }
+  return response.data;
 };
+

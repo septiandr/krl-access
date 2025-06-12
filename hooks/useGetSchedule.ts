@@ -10,6 +10,7 @@ export function useSchedule(params = {}, onSuccess?: (data: GetScheduleResult) =
     fetchFn,
     { onSuccess }
   )
+  console.log("🚀 ~ useSchedule ~ error:", error)
 
   const filtered = data?.data.filter(
     (item) => item.ka_name === "COMMUTER LINE YOGYAKARTA"

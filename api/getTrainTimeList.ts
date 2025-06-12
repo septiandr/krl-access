@@ -20,7 +20,6 @@ export interface TrainScheduleResponse {
 export type GetScheduleResult = TrainScheduleResponse | null;
 
 export const getTrainSchedule = async (trainid: string): Promise<GetScheduleResult> => {
-  try {
     const response = await axios.get<TrainScheduleResponse>(
       `${API_BASE_URL}/schedule-train`,
       {
@@ -34,8 +33,4 @@ export const getTrainSchedule = async (trainid: string): Promise<GetScheduleResu
     );
 
     return response.data;
-  } catch (error: any) {
-    console.error("Gagal fetch jadwal:", error.response?.data || error.message);
-    return null;
-  }
 };

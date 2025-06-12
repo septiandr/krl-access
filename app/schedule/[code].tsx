@@ -18,6 +18,7 @@ import {
 
 const Schedule: React.FC = () => {
   const [schedule, setSchedule] = useState<TrainSchedule[] | null>(null);
+  console.log("🚀 ~ schedule:", schedule)
   const { code, name } = useLocalSearchParams();
   const [filteredValue, setFilteredValue] = useState<TrainSchedule[] | null>(
     null
@@ -25,7 +26,7 @@ const Schedule: React.FC = () => {
 
   const { loading, error } = useSchedule({ stationId: code }, (data) =>
     setSchedule(data?.data ?? null)
-  );
+);
 
   const [activeFilter, setActiveFilter] = useState("");
   const [activeTimeFilter, setActiveTimeFilter] = useState("");

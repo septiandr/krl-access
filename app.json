@@ -2,7 +2,7 @@
   "expo": {
     "name": "KRL Access",
     "slug": "krl-access",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/krl-icon.png",
     "scheme": "krlaccess",
